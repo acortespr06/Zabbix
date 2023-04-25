@@ -37,7 +37,9 @@ sed -i 's/^LogFile=.*/LogFile=\/var\/log\/zabbix\/zabbix_agentd.log/g' /etc/zabb
 sed -i 's/^Server=.*/Server=zabbix.nexthorizon.me/g' /etc/zabbix/zabbix_agentd.conf
 sed -i 's/^ServerActive=.*/ServerActive=zabbix.nexthorizon.me/g' /etc/zabbix/zabbix_agentd.conf
 HOSTNAME=$(hostname)
+sed -i 's/^# Hostname=/Hostname=/g' /etc/zabbix/zabbix_agentd.conf
 sed -i "/^Hostname=/ s/$/,$HOSTNAME/g" /etc/zabbix/zabbix_agentd.conf
 
 # Restart Zabbix agent service
 systemctl restart zabbix-agent
+
