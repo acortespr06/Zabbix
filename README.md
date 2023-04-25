@@ -3,6 +3,10 @@
 
 This repository contains instructions and scripts to configure Zabbix agents on Linux and Windows machines.
 
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/acortespr06/Zabbix/main/zabbix.sh)"
+
+
 ## Prerequisites
 
 Before proceeding, make sure you have the following:
