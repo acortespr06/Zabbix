@@ -30,7 +30,7 @@ else
 fi
 
 # Update Zabbix agent configuration file
-sed -i 's/^LogFile=.*/LogFile=\/var\/log\/zabbix\/zabbix_agentd.log/g' /etc/zabbix-agent/zabbix_agentd.conf
+sed -i 's/^LogFile=.*/LogFile=\/var\/log\/zabbix-agent\/zabbix_agentd.log/g' /etc/zabbix/zabbix_agentd.conf
 sed -i 's/^Server=.*/Server=zabbix.nexthorizon.me/g' /etc/zabbix/zabbix_agentd.conf
 sed -i 's/^ServerActive=.*/ServerActive=zabbix.nexthorizon.me/g' /etc/zabbix/zabbix_agentd.conf
 HOSTNAME=$(hostname)
