@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-read -p "Enter the Zabbix Server IP: " zabbix_server
-read -p "Enter the Zabbix serverActive IP: " zabbix_server_active
-
 # Detect Linux distribution and version
 if [ -f /etc/os-release ]; then
     # Amazon Linux, Red Hat Enterprise Linux, CentOS, Oracle Linux
@@ -10,13 +7,16 @@ if [ -f /etc/os-release ]; then
     OS=$NAME
     VER=$VERSION_ID
 elif type lsb_release >/dev/null 2>&1; then
-    # Ubuntu
+    # Ubuntu or Debian
     OS=$(lsb_release -si)
     VER=$(lsb_release -sr)
 else
     echo "Unsupported Linux distribution."
     exit 1
 fi
+
+read -p "Enter the Zabbix Server IP: " zabbix_server
+read -p "Enter the Zabbix serverActive IP: " zabbix_server_active
 
 # Install Zabbix agent
 if [ "$OS" = "Ubuntu" ]; then
@@ -28,7 +28,7 @@ elif [ "$OS" = "Debian GNU/Linux" ]; then
     wget https://repo.zabbix.com/zabbix/5.4/debian/pool/main/z/zabbix-release/zabbix-release_5.4-1+debian$VER_all.deb
     apt update
     apt -y install zabbix-agent
-elif [[ "$OS" = "Red Hat Enterprise Linux" || "$OS" = "CentOS" ]]; then
+elif [[ "$OS" = "Red Hat Enterprise Linux" || "$OS" = "CentOS" || "$OS" = "Oracle Linux" ]]; then
     yum -y install https://repo.zabbix.com/zabbix/5.4/rhel/$VER/x86_64/zabbix-release-5.4-1.el$VER.noarch.rpm
     yum -y install zabbix-agent
 else
@@ -46,5 +46,10 @@ HOSTNAME=$(hostname)
 sed -i "s/^# Hostname=/Hostname=/g" /etc/zabbix/zabbix_agentd.conf
 sed -i "/^Hostname=/ s/.*/Hostname=$HOSTNAME/g" /etc/zabbix/zabbix_agentd.conf
 
-# Restart Zabbix agent service
-systemctl restart zabbix-agent
+# Add OS metadata to the configuration file
+if [[ "$OS" = "Debian GNU/Linux" || "$OS" = "Ubuntu" ]]; then
+    sed -i '/# Global macro/ a\ 
+    UserParameter=os.discovery,/bin/echo -n "{\"data\":[{\"{#OSNAME}\":\"'${OS}'\"}]}"' /etc/zabbix/zabbix_agentd.conf
+    sed -i '/# User-defined macro/ a\ 
+    UserParameter=os.version[*],/bin/cat /etc/os-release | grep "^VERSION_ID" | cut -d "=" -f 2' /etc/zabbix/zabbix_agentd.conf
+elif [[
