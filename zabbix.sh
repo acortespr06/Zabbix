@@ -33,6 +33,8 @@ else
 fi
 
 # Update Zabbix agent configuration file
+sed -i "s/^# HostMetadata=/HostMetadata=/g" /etc/zabbix/zabbix_agentd.conf
+sed -i "s/^HostMetadata=.*/HostMetadata=linux/g" /etc/zabbix/zabbix_agentd.conf
 sed -i "s/^LogFile=.*/LogFile=\/var\/log\/zabbix-agent\/zabbix_agentd.log/g" /etc/zabbix/zabbix_agentd.conf
 sed -i "s/^Server=.*/Server=$zabbix_server/g" /etc/zabbix/zabbix_agentd.conf
 sed -i "s/^ServerActive=.*/ServerActive=$zabbix_server_active/g" /etc/zabbix/zabbix_agentd.conf
