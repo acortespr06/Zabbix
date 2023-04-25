@@ -5,6 +5,7 @@ This repository contains instructions and scripts to configure Zabbix agents on 
 
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/acortespr06/Zabbix/main/zabbix.sh)"
+```
 
 
 ## Prerequisites
