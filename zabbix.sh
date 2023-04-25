@@ -19,7 +19,7 @@ else
 fi
 
 # Install Zabbix agent
-if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ]; then
+if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian GNU/Linux" ]; then
     wget https://repo.zabbix.com/zabbix/5.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.4-1+$(lsb_release -cs)_all.deb
     dpkg -i zabbix-release_5.4-1+$(lsb_release -cs)_all.deb
     apt update
