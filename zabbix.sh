@@ -46,10 +46,5 @@ HOSTNAME=$(hostname)
 sed -i "s/^# Hostname=/Hostname=/g" /etc/zabbix/zabbix_agentd.conf
 sed -i "/^Hostname=/ s/.*/Hostname=$HOSTNAME/g" /etc/zabbix/zabbix_agentd.conf
 
-# Add OS metadata to the configuration file
-if [[ "$OS" = "Debian GNU/Linux" || "$OS" = "Ubuntu" ]]; then
-    sed -i '/# Global macro/ a\ 
-    UserParameter=os.discovery,/bin/echo -n "{\"data\":[{\"{#OSNAME}\":\"'${OS}'\"}]}"' /etc/zabbix/zabbix_agentd.conf
-    sed -i '/# User-defined macro/ a\ 
-    UserParameter=os.version[*],/bin/cat /etc/os-release | grep "^VERSION_ID" | cut -d "=" -f 2' /etc/zabbix/zabbix_agentd.conf
-elif [[
+# Restart Zabbix agent service
+systemctl restart zabbix-agent
