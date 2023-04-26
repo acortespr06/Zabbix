@@ -16,7 +16,7 @@ Before proceeding, make sure you have the following:
 ### Linux
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/acortespr06/Zabbix/main/zabbix.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/acortespr06/Zabbix/main/linux/zabbix.sh)"
 ```
 
 To install the Zabbix agent on a Linux machine, run the following commands:
